@@ -1,34 +1,7 @@
 # Created by https://www.toptal.com/developers/gitignore/api/django,python,web,angular
 # Edit at https://www.toptal.com/developers/gitignore?templates=django,python,web,angular
 
-### Angular ###
-## Angular ##
-# compiled output
 dist/
-tmp/
-app/**/*.js
-app/**/*.js.map
-
-# dependencies
-node_modules/
-bower_components/
-
-# IDEs and editors
-.idea/
-
-# misc
-.sass-cache/
-connect.lock/
-coverage/
-libpeerconnection.log/
-npm-debug.log
-testem.log
-typings/
-.angular/
-
-# e2e
-e2e/*.js
-e2e/*.map
 
 # System Files
 .DS_Store/
@@ -273,19 +246,5 @@ cython_debug/
 # pyenv
 .python-version
 
-### Web ###
-*.asp
-*.cer
-*.csr
-*.css
-*.htm
-*.html
-*.js
-*.jsp
-*.php
-*.rss
-*.wasm
-*.wat
-*.xhtml
 
 # End of https://www.toptal.com/developers/gitignore/api/django,python,web,angular
