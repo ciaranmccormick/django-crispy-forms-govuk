@@ -43,7 +43,6 @@ class Field(crispy_forms_layout.Field):
     def render(
         self,
         form,
-        form_style,
         context,
         template_pack=TEMPLATE_PACK,
         extra_context=None,
@@ -53,7 +52,6 @@ class Field(crispy_forms_layout.Field):
         self.attrs = {k: render_template(context, v) for k, v in self.attrs.items()}
         return super().render(
             form,
-            form_style=form_style,
             context=context,
             template_pack=template_pack,
             extra_context=extra_context,
@@ -77,14 +75,18 @@ class HiddenField(Field):
     def render(
         self,
         form,
-        form_style,
         context,
         template_pack=TEMPLATE_PACK,
         extra_context=None,
         **kwargs,
     ):
         self.attrs.update({"type": "hidden"})
-        return super().render(form, form_style, context, template_pack, extra_context)
+        return super().render(
+            form,
+            context=context,
+            template_pack=template_pack,
+            extra_context=extra_context,
+        )
 
 
 # TODO - this is wrong a checkbox field should render a single checkbox
@@ -113,7 +115,7 @@ class CheckboxField(Field):
         lookup = {LegendSize.xl: 1, LegendSize.l: 2, LegendSize.m: 3, LegendSize.s: 4}
         return lookup[legend_size]
 
-    def render(self, form, form_style, context, template_pack=TEMPLATE_PACK, **kwargs):
+    def render(self, form, context, template_pack=TEMPLATE_PACK, **kwargs):
         context["legend_classes"] = f"govuk-fieldset__legend--{self.legend_size.value}"
         context["legend"] = self.legend
         context["hyperlink_label"] = self.hyperlink_label
@@ -122,7 +124,6 @@ class CheckboxField(Field):
 
         return super().render(
             form,
-            form_style=form_style,
             context=context,
             template_pack=template_pack,
             **kwargs,
@@ -142,12 +143,11 @@ class CheckboxSingleField(Field):
         self.small_boxes = small_boxes
         super().__init__(field, *args, **kwargs)
 
-    def render(self, form, form_style, context, template_pack=TEMPLATE_PACK, **kwargs):
+    def render(self, form, context, template_pack=TEMPLATE_PACK, **kwargs):
         context["small_boxes"] = self.small_boxes
 
         return super().render(
             form,
-            form_style=form_style,
             context=context,
             template_pack=template_pack,
             **kwargs,
@@ -175,7 +175,7 @@ class CheckboxMultipleField(Field):
         lookup = {LegendSize.xl: 1, LegendSize.l: 2, LegendSize.m: 3, LegendSize.s: 4}
         return lookup[legend_size]
 
-    def render(self, form, form_style, context, template_pack=TEMPLATE_PACK, **kwargs):
+    def render(self, form, context, template_pack=TEMPLATE_PACK, **kwargs):
         context["legend_classes"] = f"govuk-fieldset__legend--{self.legend_size.value}"
         context["legend_heading"] = self.heading_lookup(self.legend_size)
         context["legend"] = self.legend
@@ -183,7 +183,6 @@ class CheckboxMultipleField(Field):
 
         return super().render(
             form,
-            form_style=form_style,
             context=context,
             template_pack=template_pack,
             **kwargs,
@@ -224,7 +223,7 @@ class RadioAccordion(Accordion):
             target.active = True
         return target
 
-    def render(self, form, form_style, context, template_pack=TEMPLATE_PACK, **kwargs):
+    def render(self, form, context, template_pack=TEMPLATE_PACK, **kwargs):
         context[
             "legend_classes"
         ] = f"govuk-fieldset__legend--{self.legend_size.value}"  # noqa: E501
@@ -238,7 +237,6 @@ class RadioAccordion(Accordion):
 
         return super().render(
             form,
-            form_style=form_style,
             context=context,
             template_pack=template_pack,
             **kwargs,
@@ -250,7 +248,7 @@ class RadioAccordionGroup(AccordionGroup):
     suppress_form_group_error = True
     has_errors = False
 
-    def render(self, form, form_style, context, template_pack=TEMPLATE_PACK, **kwargs):
+    def render(self, form, context, template_pack=TEMPLATE_PACK, **kwargs):
         # check fields for errors
         for field in self.fields:
             if field in form.errors.keys() or len(form.errors) > 0:
@@ -263,7 +261,6 @@ class RadioAccordionGroup(AccordionGroup):
 
         return super().render(
             form,
-            form_style=form_style,
             context=context,
             template_pack=template_pack,
             **kwargs,
