@@ -49,7 +49,8 @@ def test_cancellinkbutton(
     form = EmptyForm()
     helper.layout = Layout(
         ButtonHolder(
-            ButtonSubmit("submit", "submit", content="Confirm"), LinkButton(url="/"),
+            ButtonSubmit("submit", "submit", content="Confirm"),
+            LinkButton(url="/"),
         )
     )
 

@@ -20,7 +20,7 @@ __all__ = ["BaseInput", "ButtonElement", "ButtonSubmit", "LinkButton"]
 
 
 def render_template(context, value):
-    return Template(value).render(context)
+    return Template(value).render(context=context)
 
 
 class BaseNode(TemplateNameMixin):
@@ -60,7 +60,7 @@ class BaseInput(BaseNode):
         context.update({"input": self})
 
         template = self.get_template_name(template_pack)
-        return render_to_string(template, context.flatten())
+        return render_to_string(template, context=context.flatten())
 
 
 class ButtonElement(BaseInput):
@@ -113,7 +113,9 @@ class ButtonElement(BaseInput):
         if self.content is not None:
             self.content = self.render_template(context, self.content)
 
-        return super().render(form, form_style, context, template_pack)
+        return super().render(
+            form, form_style=form_style, context=context, template_pack=template_pack
+        )
 
 
 class ButtonSubmit(ButtonElement):
@@ -177,4 +179,4 @@ class LinkButton(BaseNode):
 
         context.update({"input": self})
 
-        return render_to_string(template, context.flatten())
+        return render_to_string(template, context=context.flatten())
