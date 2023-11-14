@@ -20,7 +20,7 @@ __all__ = ["BaseInput", "ButtonElement", "ButtonSubmit", "LinkButton"]
 
 
 def render_template(context, value):
-    return Template(value).render(context)
+    return Template(value).render(context=context)
 
 
 class BaseNode(TemplateNameMixin):
@@ -49,7 +49,7 @@ class BaseInput(BaseNode):
         self.template = kwargs.pop("template", self.template)
         self.flat_attrs = flatatt(kwargs)
 
-    def render(self, form, form_style, context, template_pack=TEMPLATE_PACK, **kwargs):
+    def render(self, form, context, template_pack=TEMPLATE_PACK, **kwargs):
         """
         Renders an `<input />` if container is used as a Layout object.
         Input button value can be a variable in context.
@@ -60,7 +60,7 @@ class BaseInput(BaseNode):
         context.update({"input": self})
 
         template = self.get_template_name(template_pack)
-        return render_to_string(template, context.flatten())
+        return render_to_string(template, context=context.flatten())
 
 
 class ButtonElement(BaseInput):
@@ -102,7 +102,7 @@ class ButtonElement(BaseInput):
         self.content = content
         super().__init__(name, value, **kwargs)
 
-    def render(self, form, form_style, context, template_pack=TEMPLATE_PACK, **kwargs):
+    def render(self, form, context, template_pack=TEMPLATE_PACK, **kwargs):
         """Renders `template` using context.
 
         Notes:     * Assigns `button_content=content` to `context`
@@ -113,7 +113,7 @@ class ButtonElement(BaseInput):
         if self.content is not None:
             self.content = self.render_template(context, self.content)
 
-        return super().render(form, form_style, context, template_pack)
+        return super().render(form, context=context, template_pack=template_pack)
 
 
 class ButtonSubmit(ButtonElement):
@@ -166,7 +166,7 @@ class LinkButton(BaseNode):
 
         self.template = kwargs.pop("template", self.template)
 
-    def render(self, form, form_style, context, template_pack=TEMPLATE_PACK, **kwargs):
+    def render(self, form, context, template_pack=TEMPLATE_PACK, **kwargs):
         template = self.get_template_name(template_pack)
 
         if self.content is not None:
@@ -177,4 +177,4 @@ class LinkButton(BaseNode):
 
         context.update({"input": self})
 
-        return render_to_string(template, context.flatten())
+        return render_to_string(template, context=context.flatten())
